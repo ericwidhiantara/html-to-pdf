@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -29,6 +30,8 @@ func init() {
 
 func main() {
 	router := gin.Default()
+
+	router.Use(cors.Default())
 
 	router.POST("/generate-html-pdf", func(c *gin.Context) {
 		htmlString := c.PostForm("html")
