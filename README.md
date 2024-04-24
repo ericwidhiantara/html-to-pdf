@@ -1,12 +1,26 @@
+## CLONE THIS REPO
+```bash
+git clone https://github.com/thxrhmn/html-to-pdf.git
+```
+
+## RUN GOTENBERG
+```bash
+docker run --rm -p 4000:3000 -d gotenberg/gotenberg:8
+```
+
+## COPY / FILL .ENV VARIABLE
+```bash
+cp .env.example .env
+```
+
 ## BUILD
 ```bash
-docker build -t html-pdf:latest .
+docker build -t html-to-pdf:latest .
 ```
 
 ## RUN
-
 ```bash
-docker run -d -p 5000:5000 --name html-pdf html-pdf:latest
+docker run -d -p 5000:5000 --name html-to-pdf html-to-pdf:latest
 ```
 
 ## USAGE:
