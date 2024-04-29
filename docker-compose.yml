@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    ports:
+      - "4000:3000"
+    container_name: gotenberg
+
+  html-to-pdf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: html-to-pdf:latest 
+    ports:
+      - "5000:5000"
+    container_name: html-to-pdf
