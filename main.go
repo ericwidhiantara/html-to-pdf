@@ -4,9 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"math/rand"
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -63,10 +66,20 @@ func generatePDF(htmlString string) ([]byte, error) {
 	// Create HTTP multipart request
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile("files", "index.html")
+
+	// Generate folder name with Unix time and random suffix
+	folderName := strconv.FormatInt(time.Now().Unix(), 10) + "_" + randomString(4)
+	// Create folder
+	if err := os.MkdirAll(folderName, 0755); err != nil {
+		return nil, err
+	}
+
+	// Create file with folder timestamp
+	part, err := writer.CreateFormFile("files", folderName+"/index.html")
 	if err != nil {
 		return nil, err
 	}
+
 	_, err = io.Copy(part, bytes.NewBufferString(htmlString))
 	if err != nil {
 		return nil, err
@@ -95,4 +108,14 @@ func generatePDF(htmlString string) ([]byte, error) {
 	}
 
 	return pdfBuffer.Bytes(), nil
+}
+
+// Generate random string of numbers for folder suffix
+func randomString(length int) string {
+	const charset = "0123456789"
+	result := make([]byte, length)
+	for i := range result {
+		result[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(result)
 }
